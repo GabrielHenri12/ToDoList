@@ -1,0 +1,60 @@
+div.table {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.spaceTask{
+  background-color: #e9e9e9;
+  border: 1px solid;
+  border-radius: 10px;
+  width: 70vw;
+  height: 90vh;
+  overflow: hidden;
+}
+
+.spaceTask ul{
+  padding: 0;
+}
+
+.spaceTask li{
+  display: flex;
+  background-color: #a97ffc;
+  border-bottom: 1px solid;
+  padding: 15px;
+  letter-spacing: 0.1rem;
+  font-size: 1.5rem;
+}
+
+.spaceTask li input{
+  width: 20px;
+  margin: 0px 15px 0px 15px;
+}
+
+.addTask {
+  margin-bottom: 30px;
+  width: 475px;
+}
+
+.addTask input{
+  width: 73%;
+  height: 30px;
+  border: 1px solid #000;
+  border-right: 0;
+  border-radius: 5px 0 0 5px;
+  font-size: 1.3rem;
+  outline: none;
+}
+
+.addTask button{
+  width: 25%;
+  height: 34px;
+  background-color: #8857ec;
+  color: #fff;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  font-size: 1.3rem;
+}
