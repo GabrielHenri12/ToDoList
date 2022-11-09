@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import api from './Data/listTask'
 import './App.css'
 import delet from "./assets/delete.png"
+import done from "./assets/done.png"
 
 type list = {
   id: number,
@@ -14,20 +15,36 @@ function App() {
   const [listTask, setListTask]: any = useState([])
   const [task, setTask] = useState('')
   const [reset, setReset] = useState('')
-  
+
   function creatTask(item: string) {
     api
       .post('/tarefas', { task: item })
       .then(response => setReset(response.data))
-      .catch(err => console.log('Deu erro se fudeu' + err))
+      .catch(err => console.log('Ocorreu um erro' + err))
     return setTask('')
   }
 
-  function deletTask(item: number){
+  const [valueDone, setDone] = useState(true)
+  function checkedTask(item: number, trueOrfalse: boolean) {
+    switch (trueOrfalse) {
+      case true:
+        setDone(false)
+        break;
+      case false:
+        setDone(true)
+        break;
+    }
+    api
+      .put(`/tarefas/${item}`, { done: valueDone })
+      .then(response => setReset(response.data))
+      .catch(err => console.log('Ocorreu um erro' + err))
+  }
+
+  function deletTask(item: number) {
     api
       .delete(`/tarefas/${item}`)
       .then(response => setReset(response.data))
-      .catch(err => console.log('Deu erro se fudeu' + err))
+      .catch(err => console.log('Ocorreu um erro' + err))
   }
 
   useEffect(() => {
@@ -36,7 +53,7 @@ function App() {
       .then((Response) => setListTask(Response.data))
       .catch(err => console.log('Ocorreu um erro' + err))
   }, [reset])
-  
+
   function newTask(e: string) {
     setTask(e)
   }
@@ -44,10 +61,10 @@ function App() {
 
   let listTable = listTask.tarefa?.map((item: list, key: number) => {
     return (
-      <li key={key}>
+      <li key={key} className={item.done ? 'checked' : ''}>
         <p>{item.task}</p>
-        <input type="checkbox" defaultChecked={item.done} />
-        <img src={delet} onClick={e => deletTask(item.id)} alt="delet task" />
+        <img src={done} id="done" onClick={e => checkedTask(item.id, item.done)} alt="check task" />
+        <img src={delet} id="delet" onClick={e => deletTask(item.id)} alt="delet task" />
       </li>
     )
   })
