@@ -24,18 +24,10 @@ function App() {
     return setTask('')
   }
 
-  const [valueDone, setDone] = useState(true)
   function checkedTask(item: number, trueOrfalse: boolean) {
-    switch (trueOrfalse) {
-      case true:
-        setDone(false)
-        break;
-      case false:
-        setDone(true)
-        break;
-    }
+    
     api
-      .put(`/tarefas/${item}`, { done: valueDone })
+      .put(`/tarefas/${item}`, { done: trueOrfalse? false:true })
       .then(response => setReset(response.data))
       .catch(err => console.log('Ocorreu um erro' + err))
   }
