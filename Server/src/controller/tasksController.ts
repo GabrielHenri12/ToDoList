@@ -2,17 +2,17 @@ import { Request, Response } from "express";
 import { Tasks } from "../models/tasks";
 
 export const all = async (req: Request, res: Response) => {
-    let tarefa = await Tasks.findAll();
+    let tarefa = await Tasks.findAll({ where: { id_user: req.user } });
 
     res.json({ tarefa })
 }
 
 export const add = async (req: Request, res: Response) => {
     const newTask = req.body
-    console.log(newTask)
 
     if (newTask.task) {
         let tarefa = await Tasks.create({
+            id_user: req.user,
             task: newTask.task,
             done: newTask.done ? true : false
         });
