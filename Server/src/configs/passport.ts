@@ -19,7 +19,7 @@ const options = {
 };
 
 passport.use(new Strategy(options, async (payload, done) => {
-    const user = await Users.findByPk(payload.id);
+    const user = await Users.findOne({ where: { email: payload.email } });
 
     if (user) {
         return done(null, user);
@@ -28,13 +28,13 @@ passport.use(new Strategy(options, async (payload, done) => {
     };
 }));
 
-export const privatRoute = (req:Request, res:Response, next:NextFunction)=>{
-    passport.authenticate('jwt', (err, user)=>{
-        if(user){
+export const privatRoute = (req: Request, res: Response, next: NextFunction) => {
+    passport.authenticate('jwt', (err, user) => {
+        if (user) {
             req.user = user.id;
-            next();
-        }else{
-            next(notAuthorized);
+            return next();
+        } else {
+            return res.json(notAuthorized)
         }
     })(req, res, next);
 }
