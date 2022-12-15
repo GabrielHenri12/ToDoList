@@ -1,4 +1,4 @@
-import * as passport from "./passport";
+import * as passport from "../configs/passport";
 
 describe('Testing passport, authenticate JWT-Token ', ()=>{
 

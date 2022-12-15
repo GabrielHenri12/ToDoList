@@ -1,4 +1,4 @@
-import * as UsersService from "./UsersService"
+import * as UsersService from "../services/UsersService"
 import { Users, UsersInstances } from "../models/User"
 
 describe('testing functions of users', ()=>{
