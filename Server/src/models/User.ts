@@ -5,7 +5,8 @@ export interface UsersInstances extends Model {
     id: number,
     name: string,
     email: string,
-    password: string
+    password: string,
+    token: string
 }
 
 export const Users = sequelize.define<UsersInstances>('Users', {
@@ -16,7 +17,8 @@ export const Users = sequelize.define<UsersInstances>('Users', {
     },
     name: { type: DataTypes.STRING },
     email: { type: DataTypes.STRING },
-    password: { type: DataTypes.STRING }
+    password: { type: DataTypes.STRING },
+    token: { type: DataTypes.STRING }
 },
     {
         tableName: "Users",
