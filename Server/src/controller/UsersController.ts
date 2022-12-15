@@ -1,16 +1,15 @@
 import * as UsersService from "../services/UsersService";
-import { Request, response, Response } from "express";
+import { Request, Response } from "express";
 
-export const Register = async(req: Request, res: Response) => {
+export const Register = async (req: Request, res: Response) => {
     if (req.body.email && req.body.password) {
         let { name, email, password } = req.body;
         const newUser = await UsersService.CreateUser(name, email, password);
-        
+
         if (newUser instanceof Error) {
             return res.json({ error: newUser.message });
         } else {
-            console.log(newUser)
-            return res.json({ newUser: newUser.dataValues });
+            return res.json({ newUser: newUser.dataValues.token });
         };
 
     } else {
@@ -24,7 +23,8 @@ export const Login = async (req: Request, res: Response) => {
         const user = await UsersService.FindByEmail(email);
 
         if (user && await UsersService.matchPassword(password, user.password)) {
-            return res.json({ status: true });
+            let token = await UsersService.setToken(email)
+            return res.json({ status: true, token });
         } else {
             return res.json({ status: false });
         };
