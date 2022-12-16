@@ -75,9 +75,10 @@ describe('testing api routes', () => {
         let res = await request(App)
             .put('/tarefas/1')
             .set('Authorization', 'bearer ' + token)
-            .send({ task: 'task modified' })
+            .send({ task: 'task modified', done: true })
             .then(response => response.body)
         expect(res.tarefa.task).toBe('task modified')
+        expect(res.tarefa).toHaveProperty('task');
     })
 
     it('should delete task', async () => {

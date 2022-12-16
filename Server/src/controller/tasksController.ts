@@ -1,59 +1,51 @@
 import { Request, Response } from "express";
-import { Tasks } from "../models/tasks";
+import * as TaskService from "../services/TaskService";
 
 export const all = async (req: Request, res: Response) => {
-    let tarefa = await Tasks.findAll({ where: { id_user: req.user } });
+    let id_user = req.user
+    if (id_user) {
+        let tarefa = await TaskService.allTasks(id_user);
 
-    res.json({ tarefa })
+        res.json({ tarefa })
+    } else {
+        res.json({ status: false })
+    }
 }
 
 export const add = async (req: Request, res: Response) => {
-    const newTask = req.body
+    const { task, done } = req.body
+    const id = req.user
 
-    if (newTask.task) {
-        let tarefa = await Tasks.create({
-            id_user: req.user,
-            task: newTask.task,
-            done: newTask.done ? true : false
-        });
+    if (task && id) {
+        let tarefa = await TaskService.addTask(id, task, done)
 
         res.status(201).json({ tarefa });
     } else {
-        res.json({ error: "Não foi adicionado uma tarefa" })
+        res.json({ error: "not add task" })
     }
 }
 
 export const update = async (req: Request, res: Response) => {
     const id: string = req.params.id;
-    let tarefa = await Tasks.findByPk(id);
+    const { task, done } = req.body
 
-    if (tarefa) {
-        if (req.body.task) {
-            tarefa.task = req.body.task
-        }
-        switch (req.body.done) {
-            case 'true':
-            case '1':
-            case true:
-                tarefa.done = true;
-                break;
-            case 'false':
-            case '0':
-            case false:
-                tarefa.done = false;
-                break;
-        }
-        await tarefa.save();
+    if (task && id) {
+        let tarefa = await TaskService.updateTask(id, task, done)
+
+        res.json({ tarefa })
+    } else {
+        res.json({ status: false })
     }
 
-    res.json({ tarefa })
 }
 
 export const remove = async (req: Request, res: Response) => {
-    let { id } = req.params
-    let tarefa = await Tasks.findByPk(id);
+    let {id} = req.params
 
-    if (tarefa) { await tarefa.destroy(); }
-
-    res.json({})
+    if (id) {
+        let status = await TaskService.deleteTask(id)
+        return res.json({ status })
+    } else {
+        return res.json({ status: false, mensage: 'task not find' })
+    }
 }
