@@ -1,15 +1,19 @@
 import { Input } from "@chakra-ui/react";
-import { ReactPropTypes } from "react";
+import { Props } from "./InputPassword";
 
-export default () => {
+
+export default (props: Props) => {
     return (
         <>
             <Input
+                value={props.value}
+                onChange={e => props.setFunc(e.target.value)}
+                type='text'
+                placeholder={props.placeholder}
                 w={['50vw','40vw','20vw']}
                 variant='outline'
                 bgColor='whiteAlpha.700'
-                type='text'
-                placeholder='Email'
+                focusBorderColor='blackAlpha.700'
             />
         </>
     )
