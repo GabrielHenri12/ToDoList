@@ -23,14 +23,24 @@ export default () => {
     }
 
     useEffect(() => {
-        getTasks()
+        api
+            .get('/tarefas')
+            .then(response => setTask(response.data.tarefa))
+            .catch(error => console.log(error))
     }, [])
 
 
     function addTask() {
         api
             .post('/tarefas', { task: newTask, done: false })
-            .then(response => {setNewTask(''); getTasks()} )
+            .then(response => { setNewTask(''); getTasks() })
+            .catch(error => console.log(error))
+    }
+
+    function setCheck(id: number, done: boolean) {
+        api
+            .put(`/tarefas/${id}`, { done: !done })
+            .then(response =>  getTasks())
             .catch(error => console.log(error))
     }
 
@@ -42,7 +52,7 @@ export default () => {
                     <Input
                         value={newTask}
                         onChange={e => setNewTask(e.target.value)}
-                        onKeyDown={(event) => {if(event.key == "Enter"){addTask()}} }
+                        onKeyDown={(event) => { if (event.key == "Enter") { addTask() } }}
                         type='text'
                         focusBorderColor='white'
                         _hover={{ borderColor: 'white' }}
@@ -58,7 +68,7 @@ export default () => {
             </VStack>
             <VStack mt='7vh' alignItems='flex-start' w='40vw' h='70vh' bg='blue.200' borderRadius='8px' boxShadow='dark-lg' >
                 <Flex m='20px' flexDirection='column' w='38vw' overflowY='auto' css={customScrollbar}>
-                    {Tasks && Tasks.map(i => <CheckTask task={i.task} done={i.done} id={i.id} />)}
+                    {Tasks && Tasks.map(i => <CheckTask task={i.task} done={i.done} id={i.id} setChecked={setCheck} />)}
                     {!Tasks && <Heading>Lista Vazia</Heading>}
                 </Flex>
             </VStack>

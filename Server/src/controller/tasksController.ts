@@ -29,7 +29,7 @@ export const update = async (req: Request, res: Response) => {
     const id: string = req.params.id;
     const { task, done } = req.body
 
-    if (task && id) {
+    if (id) {
         let tarefa = await TaskService.updateTask(id, task, done)
 
         res.json({ tarefa })

@@ -9,20 +9,22 @@ export const addTask = async (id_user: any, task: string, done: boolean = false)
     return newTask
 }
 
-export const findById = async (id:any) => {
+export const findById = async (id: any) => {
     let task = await Tasks.findByPk(id);
     return task;
 }
 
-export const updateTask = async (id_task: any, task: string, done: boolean = false) => {
+export const updateTask = async (id_task: any, task: string, done: boolean) => {
     let taskForUpdate = await findById(id_task);
     if (taskForUpdate) {
         taskForUpdate.task = task;
         taskForUpdate.done = done;
         taskForUpdate.save();
-        return taskForUpdate;
     }
+
+    return taskForUpdate;
 }
+
 
 export const deleteTask = async (id_task: any) => {
     let taskDelete = await findById(id_task)

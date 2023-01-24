@@ -6,7 +6,7 @@ export type ListTasks = {
     id: number
 }
 
-export default (props: ListTasks) => {
+export default (props: any) => {
     return (
         <Checkbox
             pt="10px"
@@ -14,6 +14,7 @@ export default (props: ListTasks) => {
             colorScheme='linkedin'
             alignItems='baseline'
             isChecked={props.done}
+            onChange={_ => props.setChecked(props.id, props.done)}
             key={props.id}
         >
             <Text fontSize='larger' color='white'>
